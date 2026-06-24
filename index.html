@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neon Tic Tac Toe — Multiplayer</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Animated background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- Connection status -->
+    <div id="connectionStatus" class="connection-status offline">
+      <span class="dot"></span>
+      <span class="text">Connecting...</span>
+    </div>
+
+    <!-- LOBBY SCREEN -->
+    <section id="lobbyScreen" class="screen active">
+      <div class="glass-card lobby-card">
+        <h1 class="title neon-text">
+          <span class="title-main">TIC</span>
+          <span class="title-main">TAC</span>
+          <span class="title-main">TOE</span>
+        </h1>
+        <p class="subtitle">⚡ By : IKSTONE⚡</p>
+
+        <div class="input-group">
+          <label for="playerName">Player Name</label>
+          <input
+            type="text"
+            id="playerName"
+            maxlength="15"
+            placeholder="Enter your name..."
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="button-row">
+          <button id="btnCreateRoom" class="btn btn-primary">
+            <span class="icon">➕</span>
+            <span>Create Room</span>
+          </button>
+          <button id="btnJoinRoom" class="btn btn-secondary">
+            <span class="icon">🚪</span>
+            <span>Join Room</span>
+          </button>
+        </div>
+
+        <div class="divider"><span>OR</span></div>
+
+        <div class="input-group">
+          <label for="roomIdInput">Room Code</label>
+          <div class="join-row">
+            <input
+              type="text"
+              id="roomIdInput"
+              maxlength="6"
+              placeholder="6-char code"
+              autocomplete="off"
+              style="text-transform: uppercase"
+            />
+            <button id="btnJoinByCode" class="btn btn-accent">JOIN</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WAITING ROOM SCREEN -->
+    <section id="waitingScreen" class="screen">
+      <div class="glass-card waiting-card">
+        <h2 class="neon-text-sm">Waiting for opponent...</h2>
+
+        <div class="room-info">
+          <div class="room-code-box">
+            <span class="label">ROOM CODE</span>
+            <div class="code-display">
+              <span id="roomCodeDisplay">------</span>
+              <button id="btnCopyRoomId" class="btn-icon" title="Copy">
+                📋
+              </button>
+            </div>
+          </div>
+
+          <div class="players-waiting">
+            <div class="player-slot filled">
+              <div class="avatar">🎮</div>
+              <span id="waitingPlayer1">You</span>
+              <span class="badge ready">READY</span>
+            </div>
+            <div class="vs">VS</div>
+            <div class="player-slot empty" id="waitingPlayer2Slot">
+              <div class="avatar">👤</div>
+              <span id="waitingPlayer2">Searching...</span>
+              <div class="loader-ring"></div>
+            </div>
+          </div>
+        </div>
+
+        <button id="btnLeaveRoom" class="btn btn-danger">
+          <span class="icon">🚪</span>
+          <span>Leave Room</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- GAME SCREEN -->
+    <section id="gameScreen" class="screen">
+      <div class="glass-card game-card">
+        <div class="game-header">
+          <div class="room-tag">
+            ROOM: <span id="gameRoomCode">------</span>
+          </div>
+          <div class="turn-indicator" id="turnIndicator">
+            <span class="turn-label">TURN</span>
+            <span class="turn-symbol" id="turnSymbol">X</span>
+          </div>
+          <button id="btnLeaveGame" class="btn-icon" title="Leave">✖</button>
+        </div>
+
+        <div class="players-bar">
+          <div class="player-info" id="player1Info">
+            <div class="symbol x">X</div>
+            <div class="info">
+              <span class="name" id="p1Name">Player 1</span>
+              <span class="tag">YOU</span>
+            </div>
+          </div>
+          <div class="player-info" id="player2Info">
+            <div class="symbol o">O</div>
+            <div class="info">
+              <span class="name" id="p2Name">Player 2</span>
+              <span class="tag">OPP</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="board-wrapper">
+          <div class="board" id="board">
+            <!-- 9 cells generated by JS -->
+          </div>
+          <svg
+            class="win-line"
+            id="winLine"
+            viewBox="0 0 300 300"
+            preserveAspectRatio="none"
+          >
+            <line id="winLinePath" x1="0" y1="0" x2="0" y2="0" />
+          </svg>
+        </div>
+
+        <div class="status-bar" id="statusBar">
+          <span id="statusText">Game started!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL -->
+    <div id="modal" class="modal hidden">
+      <div class="modal-content glass-card">
+        <h2 id="modalTitle" class="neon-text-sm">Result</h2>
+        <p id="modalMessage">Message</p>
+        <div class="modal-buttons">
+          <button id="btnModalPlayAgain" class="btn btn-primary">
+            Play Again
+          </button>
+          <button id="btnModalLobby" class="btn btn-secondary">
+            Back to Lobby
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script type="module" src="firebase.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
